@@ -13,3 +13,35 @@ def client():
 
     with app.test_client() as client:
         yield client
+
+def test_health_check(client):
+    response = client.get('/health')
+    assert response.status_code == 200
+    assert response.get_json() == {"status": "ok"}
+
+def test_add_and_get_task(client):
+    response = client.post('/tasks', json={'title': 'Test task'})
+    assert response.status_code == 201
+
+    response = client.get('/tasks')
+    data = response.get_json()
+    assert len(data) == 1
+    assert data[0]['title'] == 'Test task'
+    assert data[0]['completed'] is False
+
+def test_complete_task(client):
+    client.post('/tasks', json={'title': 'Test task'})
+    response = client.patch('/tasks/1/complete')
+    assert response.status_code == 200
+
+    response = client.get('/tasks')
+    task = response.get_json()[0]
+    assert task['completed'] is True
+
+def test_delete_task(client):
+    client.post('/tasks', json={'title': 'Test task'})
+    response = client.delete('/tasks/1')
+    assert response.status_code == 200
+
+    response = client.get('/tasks')
+    assert response.get_json() == []
