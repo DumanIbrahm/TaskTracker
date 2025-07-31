@@ -11,8 +11,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source code
+      - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Show repository layout for debugging
+        run: |
+          echo "PWD: $(pwd)"
+          echo "Top-level tree:"
+          ls -R . | head -200
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -25,5 +31,25 @@ jobs:
           pip install -r requirements.txt
           pip install pytest
 
-      - name: Run tests
-        run: PYTHONPATH=. pytest
+      - name: Run tests (with automatic path detection)
+        run: |
+          echo "Looking for test file..."
+          if [ -f tests/test_tasks.py ]; then
+            echo "Found at ./tests/test_tasks.py"
+            export PYTHONPATH=.
+            pytest -vv
+          elif [ -f TaskTrackr/tests/test_tasks.py ]; then
+            echo "Found at TaskTrackr/tests/test_tasks.py"
+            export PYTHONPATH=TaskTrackr
+            cd TaskTrackr
+            pytest -vv
+          elif [ -f TaskTracker/tests/test_tasks.py ]; then
+            echo "Found at TaskTracker/tests/test_tasks.py"
+            export PYTHONPATH=TaskTracker
+            cd TaskTracker
+            pytest -vv
+          else
+            echo "test_tasks.py not found in expected places. Showing files:"
+            find . -maxdepth 4 -type f | head -200
+            exit 1
+          fi
