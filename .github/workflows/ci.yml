@@ -14,10 +14,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Show repository layout for debugging
+      - name: Debug repo layout
         run: |
-          echo "PWD: $(pwd)"
-          echo "Top-level tree:"
+          echo "Working dir: $(pwd)"
           ls -R . | head -200
 
       - name: Set up Python
@@ -28,28 +27,9 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest
+          pip install -r requirements.txt pytest
 
-      - name: Run tests (with automatic path detection)
+      - name: Run the test file explicitly
         run: |
-          echo "Looking for test file..."
-          if [ -f tests/test_tasks.py ]; then
-            echo "Found at ./tests/test_tasks.py"
-            export PYTHONPATH=.
-            pytest -vv
-          elif [ -f TaskTrackr/tests/test_tasks.py ]; then
-            echo "Found at TaskTrackr/tests/test_tasks.py"
-            export PYTHONPATH=TaskTrackr
-            cd TaskTrackr
-            pytest -vv
-          elif [ -f TaskTracker/tests/test_tasks.py ]; then
-            echo "Found at TaskTracker/tests/test_tasks.py"
-            export PYTHONPATH=TaskTracker
-            cd TaskTracker
-            pytest -vv
-          else
-            echo "test_tasks.py not found in expected places. Showing files:"
-            find . -maxdepth 4 -type f | head -200
-            exit 1
-          fi
+          echo "Running pytest on tests/test_tasks.py"
+          PYTHONPATH=. pytest tests/test_tasks.py -vv
