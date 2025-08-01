@@ -17,6 +17,11 @@ def client(tmp_path):
     with app.test_client() as client:
         yield client
 
+    with app.app_context():
+        conn = app.config.get("DB_CONN")
+        if conn:
+            conn.close()
+
 
 def test_health_check(client):
     response = client.get("/health")
