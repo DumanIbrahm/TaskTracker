@@ -5,8 +5,4 @@ class Task:
         self.completed = completed
 
     def to_dict(self):
-        return {
-            "id": self.id,
-            "title": self.title,
-            "completed": bool(self.completed)
-        }
+        return {"id": self.id, "title": self.title, "completed": bool(self.completed)}

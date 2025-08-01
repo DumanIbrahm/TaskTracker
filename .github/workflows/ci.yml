@@ -14,10 +14,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Debug repo layout
+      - name: Show repo layout
         run: |
-          echo "Working dir: $(pwd)"
-          ls -R . | head -200
+          echo "PWD: $(pwd)"
+          ls -R . | head -300
+
+      - name: Show test file contents
+        run: |
+          echo "=== tests/test_tasks.py ==="
+          if [ -f tests/test_tasks.py ]; then
+            sed -n '1,200p' tests/test_tasks.py
+          else
+            echo "test_tasks.py not found at expected location"
+          fi
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -29,7 +38,21 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt pytest
 
+      - name: Verify import of app package
+        run: |
+          python -c "import sys; print('sys.path:', sys.path[:5]); import app; print('app module:', app); print('app __file__:', getattr(app, '__file__', 'n/a'))"
+
+      - name: Collect-only tests
+        run: |
+          echo "=== Pytest collect-only ==="
+          PYTHONPATH=. pytest tests/test_tasks.py --collect-only -vv || true
+
       - name: Run the test file explicitly
         run: |
-          echo "Running pytest on tests/test_tasks.py"
+          echo "=== Running pytest ==="
           PYTHONPATH=. pytest tests/test_tasks.py -vv
+      - name: Run tests with coverage
+        run: |
+          pip install coverage
+          coverage run -m pytest
+          coverage report
