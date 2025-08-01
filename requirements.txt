@@ -1,2 +1,4 @@
 flask
 pytest
+prometheus-flask-exporter
+python-json-logger

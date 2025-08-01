@@ -26,7 +26,9 @@ def add_task():
     db.commit()
     task_id = cursor.lastrowid
     task = Task(id=task_id, title=data["title"], completed=False)
-    logger.info("Yeni görev eklendi", extra={"task": task.to_dict()})
+    logger.info(
+        "Task created", extra={"task": task, "endpoint": "/tasks", "method": "POST"}
+    )
     return jsonify(task.to_dict()), 201
 
 
