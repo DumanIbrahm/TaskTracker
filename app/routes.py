@@ -1,8 +1,11 @@
+import logging
+
 from flask import Blueprint, current_app, jsonify, request
 
 from app.db import get_db
 from app.models import Task
 
+logger = logging.getLogger(__name__)
 task_bp = Blueprint("tasks", __name__)
 
 
@@ -19,9 +22,12 @@ def get_tasks():
 def add_task():
     data = request.json
     db = get_db(current_app)
-    db.execute("INSERT INTO tasks (title) VALUES (?)", (data["title"],))
+    cursor = db.execute("INSERT INTO tasks (title) VALUES (?)", (data["title"],))
     db.commit()
-    return {"message": "Task added"}, 201
+    task_id = cursor.lastrowid
+    task = Task(id=task_id, title=data["title"], completed=False)
+    logger.info("Yeni görev eklendi", extra={"task": task.to_dict()})
+    return jsonify(task.to_dict()), 201
 
 
 @task_bp.route("/tasks/<int:task_id>/complete", methods=["PATCH"])
