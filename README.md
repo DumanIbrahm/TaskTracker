@@ -1,6 +1,7 @@
 # TaskTracker 
 
-[![codecov](https://codecov.io/gh/DumanIbrahim/TaskTracker/branch/main/graph/badge.svg)](https://codecov.io/gh/DumanIbrahim/TaskTracker)
+[![codecov](https://codecov.io/gh/DumanIbrahm/TaskTracker/branch/main/graph/badge.svg)](https://codecov.io/gh/DumanIbrahim/TaskTracker)
+[![codecov](https://codecov.io/gh/DumanIbrahm/reposlug/branch/main/graph/badge.svg?token=TOKEN)](https://codecov.io/gh/kullaniciadi/reposlug)
 [![CI](https://img.shields.io/badge/CI-pending-lightgrey)](#) <!-- Replace with actual GitHub Actions badge after CI passes -->
 [![Coverage](https://img.shields.io/badge/coverage---%25-lightgrey)](#) <!-- Optional: replace with real coverage badge if added -->
 
