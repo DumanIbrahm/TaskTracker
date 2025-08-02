@@ -55,6 +55,7 @@ jobs:
         run: |
           pip install -r requirements.txt
           pytest --cov=app --cov-report=xml --cov-report=term-missing tests/
+          ls -la
           
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
