@@ -1,5 +1,6 @@
-# TaskTracker
+# TaskTracker 
 
+[![codecov](https://codecov.io/gh/DumanIbrahim/TaskTracker/branch/main/graph/badge.svg)](https://codecov.io/gh/DumanIbrahim/TaskTracker)
 [![CI](https://img.shields.io/badge/CI-pending-lightgrey)](#) <!-- Replace with actual GitHub Actions badge after CI passes -->
 [![Coverage](https://img.shields.io/badge/coverage---%25-lightgrey)](#) <!-- Optional: replace with real coverage badge if added -->
 
