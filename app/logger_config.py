@@ -1,6 +1,7 @@
 import json
 import logging
-import sys
+
+from pythonjsonlogger import jsonlogger
 
 
 class JsonFormatter(logging.Formatter):
@@ -16,9 +17,17 @@ class JsonFormatter(logging.Formatter):
 
 
 def setup_logger():
-    handler = logging.StreamHandler(sys.stdout)
-    handler.setFormatter(JsonFormatter())
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
 
-    root_logger = logging.getLogger()
-    root_logger.setLevel(logging.INFO)
-    root_logger.handlers = [handler]
+    stream_handler = logging.StreamHandler()
+    file_handler = logging.FileHandler("app.log")
+
+    formatter = jsonlogger.JsonFormatter(
+        "%(asctime)s %(levelname)s %(name)s %(message)s"
+    )
+    stream_handler.setFormatter(formatter)
+    file_handler.setFormatter(formatter)
+
+    logger.addHandler(stream_handler)
+    logger.addHandler(file_handler)

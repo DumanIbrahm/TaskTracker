@@ -46,3 +46,9 @@ def delete_task(task_id):
     db.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
     db.commit()
     return {"message": "Task deleted"}
+
+
+@task_bp.route("/error")
+def error_route():
+    current_app.logger.error("Manuel hata tetiklendi!")
+    raise Exception("Bu endpoint bilerek hata üretir.")
