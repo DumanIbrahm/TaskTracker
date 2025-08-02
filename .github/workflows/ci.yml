@@ -64,3 +64,4 @@ jobs:
           files: coverage.xml
           flags: unittests
           name: codecov-coverage
+          slug: DumanIbrahm/TaskTracker
