@@ -51,4 +51,4 @@ def delete_task(task_id):
 @task_bp.route("/error")
 def error_route():
     current_app.logger.error("Manuel hata tetiklendi!")
-    raise Exception("Bu endpoint bilerek hata üretir.")
+    return "Error occurred", 500
