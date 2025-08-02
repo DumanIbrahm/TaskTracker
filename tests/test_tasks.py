@@ -7,7 +7,7 @@ from app.db import init_db
 @pytest.fixture
 def client(tmp_path):
     db_path = tmp_path / "test.db"
-    app = create_app()
+    app = create_app(enable_metrics=False)
     app.config["TESTING"] = True
     app.config["DATABASE"] = str(db_path)
 
